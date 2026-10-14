@@ -5,15 +5,18 @@ using UnityEngine.SceneManagement;
 public class WinStateTrigger : MonoBehaviour
 {
     public UiManager uiManager;
+    public LevelManager levelManager;
 
-    private int currentScene;
-    private int nextScene;
-    
+    private void Start()
+    {
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene(2, LoadSceneMode.Additive);
+            levelManager.LoadLevelAdditive(2);
             Destroy(this.gameObject);
 
             

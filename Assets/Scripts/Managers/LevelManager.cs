@@ -59,4 +59,13 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(nextLevel);
         return;
     }
+
+    public void LoadLevelAdditive(int level)
+    {
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        nextLevel = level;
+
+        SceneManager.LoadScene(nextLevel, LoadSceneMode.Additive);
+        return;
+    }
 }
