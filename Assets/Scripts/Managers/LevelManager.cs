@@ -44,12 +44,13 @@ public class LevelManager : MonoBehaviour
     //    if (Input.GetKeyDown(KeyCode.A))
     //    {
     //        SceneManager.LoadScene(0);
-   
+
     //    }
-        
+
 
 
     //}
+
 
     public void LoadLevel(int level)
     {
@@ -68,4 +69,6 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(nextLevel, LoadSceneMode.Additive);
         return;
     }
+
+
 }

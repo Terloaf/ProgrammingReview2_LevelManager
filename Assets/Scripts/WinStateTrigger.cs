@@ -18,7 +18,7 @@ public class WinStateTrigger : MonoBehaviour
         {
             levelManager.LoadLevelAdditive(2);
             Destroy(this.gameObject);
-
+            Destroy(collision.gameObject);
             
         }
     }
