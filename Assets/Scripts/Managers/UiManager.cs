@@ -5,6 +5,7 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private Canvas pauseCanvas;
     private Canvas gameOverCanvas;
+    private Canvas interactableUI;
 
     private void Awake()
     {
@@ -12,8 +13,9 @@ public class UiManager : MonoBehaviour
         pauseCanvas = GameObject.Find("PauseScreen").GetComponent<Canvas>();
         pauseCanvas.enabled = false;
         gameOverCanvas = GameObject.Find("GameOverScreen").GetComponent<Canvas>();
-        
+        interactableUI = GameObject.Find("InteractableUi").GetComponent<Canvas>();
         gameOverCanvas.enabled = false;
+        interactableUI.enabled = false;
     }
 
     public void ShowPauseScreen()
@@ -33,5 +35,16 @@ public class UiManager : MonoBehaviour
         gameOverCanvas.enabled = true;
         Destroy(pauseCanvas.gameObject);
         
+    }
+
+    public void ShowInteractionUI()
+    {
+
+        interactableUI.enabled = true;
+
+    }
+    public void HideInteractionU()
+    {
+        interactableUI.enabled = false;
     }
 }
