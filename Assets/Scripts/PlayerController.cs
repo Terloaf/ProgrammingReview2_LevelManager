@@ -1,12 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     private float moveInput;
     private GameStateManager gameStateManager;
+    private IInteractionManager targetInteractable;
     private UiManager uiManager;
     public bool isGrounded;
     private int direction;
@@ -29,14 +31,14 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.linearVelocity = new Vector2(moveInput * 5, rb.linearVelocity.y);
-        
+
         if (Input.GetKey(KeyCode.A))
         {
             direction = -1;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            direction = 1; 
+            direction = 1;
         }
 
         hit = Physics2D.Raycast(transform.position, new Vector2(direction * 2, 0), 2, targetlayer);
@@ -44,27 +46,31 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(transform.position, Vector2.down, Color.red);
         Debug.DrawRay(transform.position, new Vector2(direction * 2, 0), Color.red);
 
-        if (hit.collider != null)
+        if(hit.collider != null && hit.collider.TryGetComponent(out IInteractionManager foundInteractable))
         {
+            targetInteractable = foundInteractable;
             uiManager.ShowInteractionUI();
-            if (Input.GetKeyDown(KeyCode.E))
+            if(Input.GetKeyDown(KeyCode.E))
             {
-                Button.transform.localScale.Set(0.5f, 0.76f, 1f);
-                Destroy(Door.gameObject);
+                targetInteractable.Interact();
+                Debug.Log("interactable: " + foundInteractable);
             }
         }
-        else uiManager.HideInteractionU();
+        else
+        {
+            uiManager.HideInteractionU();
+            targetInteractable = null;
+        }
 
         if (groundDetected.collider != null)
         {
-            Debug.Log("is grounded");
             isGrounded = true;
         }
         else
         {
             isGrounded = false;
         }
-        
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -76,31 +82,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (hit.collider != null)
-    //    {
-    //        uiManager.ShowInteractionUI();
-    //    }
-    //    else uiManager.HideInteractionU();
-    //}
-    private void OnCollisionExit2D(Collision2D collision)
+    public void OnInteract(InputAction.CallbackContext context)
     {
-        
+        if (context.performed)
+        {
+            if(targetInteractable != null)
+            {
+                targetInteractable.Interact();
+            }
+        }
+
 
     }
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    ContactPoint2D contact = collision.GetContact(0);
-
-    //    float hitAngle = Vector2.Angle(Vector2.up, contact.normal);
-
-    //    if(hitAngle < 80)
-    //    {
-    //        isGrounded = true;
-    //    }
-        
-        
-    //}
-
 }
