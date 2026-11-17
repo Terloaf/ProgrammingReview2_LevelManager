@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,6 +52,11 @@ public class LevelManager : MonoBehaviour
 
     //}
 
+    private void Start()
+    {
+        StartCoroutine(BootStrapperLoading());
+    }
+
 
     public void LoadLevel(int level)
     {
@@ -70,5 +76,9 @@ public class LevelManager : MonoBehaviour
         return;
     }
 
-
+    IEnumerator BootStrapperLoading()
+    {
+        yield return new WaitForSeconds(3);
+        LoadLevel(1);
+    }
 }
