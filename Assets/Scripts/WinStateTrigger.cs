@@ -16,7 +16,7 @@ public class WinStateTrigger : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            levelManager.LoadLevelAdditive(2);
+            levelManager.LoadLevelAdditive(3);
             Destroy(this.gameObject);
             Destroy(collision.gameObject);
             
