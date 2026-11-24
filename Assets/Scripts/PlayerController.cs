@@ -6,12 +6,15 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField]
     private float moveInput;
+    private float idleInput;
     private GameStateManager gameStateManager;
     private IInteractionManager targetInteractable;
     private UiManager uiManager;
     public bool isGrounded;
     private int direction;
+    public Animator animator;
 
     private RaycastHit2D hit;
     private RaycastHit2D groundDetected;
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         gameStateManager = GameObject.Find("GameStateManager").GetComponent<GameStateManager>();
         uiManager = GameObject.Find("UiManager").GetComponent<UiManager>();
+
     }
 
     private void Update()
@@ -40,6 +44,9 @@ public class PlayerController : MonoBehaviour
         {
             direction = 1;
         }
+
+
+        animator.SetFloat("Direction", moveInput);
 
         hit = Physics2D.Raycast(transform.position, new Vector2(direction * 2, 0), 2, targetlayer);
         groundDetected = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
